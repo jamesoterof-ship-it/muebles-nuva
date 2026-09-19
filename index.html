@@ -196,27 +196,47 @@ h1,h2,h3,h4{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.08;
 .anim .producto{opacity:0;transform:translateY(24px)}
 .anim .producto.visible{opacity:1;transform:none}
 .producto:hover{transform:translateY(-4px)}
-.producto .foto{position:relative;aspect-ratio:1/1;background:var(--crema-2);overflow:hidden;border-radius:0}
-.producto .foto img{width:100%;height:100%;object-fit:cover;transition:transform .95s var(--salida)}
-.producto:hover .foto img{transform:scale(1.1)}
+.producto .foto{position:relative;aspect-ratio:1/1;background:var(--crema-2);overflow:hidden;border-radius:0;box-shadow:0 0 0 rgba(23,19,16,0);transition:box-shadow .6s var(--salida)}
+.producto:hover .foto{box-shadow:0 28px 54px rgba(23,19,16,.26)}
+.producto .foto img{width:100%;height:100%;object-fit:cover;filter:saturate(.92);transition:transform 1.1s var(--salida),filter .6s var(--salida)}
+.producto:hover .foto img{transform:scale(1.08);filter:saturate(1.08) contrast(1.03)}
+/* Velo con el color de la marca al pasar por encima */
+.producto .foto::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(125deg,rgba(211,84,0,.3),rgba(176,141,87,.14) 55%,transparent);opacity:0;transition:opacity .55s var(--salida)}
+.producto:hover .foto::after{opacity:1}
+/* Marco fino que se dibuja hacia fuera */
+.producto .foto::before{content:"";position:absolute;inset:12px;z-index:3;pointer-events:none;border:1px solid rgba(255,255,255,.75);opacity:0;transform:scale(.94);transition:opacity .5s var(--salida),transform .6s var(--salida)}
+.producto:hover .foto::before{opacity:1;transform:scale(1)}
 .capa-hover{position:absolute;inset:0;background:linear-gradient(180deg,transparent 42%,rgba(23,19,16,.6));opacity:0;transition:opacity .4s var(--salida);display:flex;align-items:flex-end;justify-content:center;padding:22px}
 .producto:hover .capa-hover{opacity:1}
 .btn-rapido{background:rgba(255,255,255,.97);color:var(--tinta);border:none;border-radius:0;font-family:Inter,sans-serif;font-weight:600;font-size:14px;padding:13px 24px;min-height:48px;cursor:pointer;transform:translateY(16px);transition:transform .45s var(--salida),background .3s,color .3s;display:inline-flex;align-items:center;gap:8px}
 .producto:hover .btn-rapido{transform:translateY(0)}
 .btn-rapido:hover{background:var(--terracota-600);color:#fff}
-.etiqueta{position:absolute;top:0;left:0;z-index:2;background:var(--terracota-600);color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.08em;padding:8px 14px;border-radius:0}
+.etiqueta{position:absolute;top:0;left:0;z-index:4;background:var(--terracota-600);color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.08em;padding:8px 14px;border-radius:0;transition:transform .45s var(--salida),background .45s var(--salida)}
+.producto:hover .etiqueta{transform:translate(-3px,-3px);background:var(--tinta)}
 .producto .cuerpo{padding:17px 0 0;display:flex;flex-direction:column;flex:1;gap:7px}
 .categoria-mini{font-size:11px;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:var(--laton)}
-.producto h3{font-size:19px;line-height:1.24}
+.producto h3{font-size:19px;line-height:1.24;position:relative;display:inline-block;align-self:flex-start}
+.producto h3::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1.5px;background:var(--terracota-600);transform:scaleX(0);transform-origin:left;transition:transform .55s var(--salida)}
+.producto:hover h3::after{transform:scaleX(1)}
+.producto .categoria-mini{transition:color .4s var(--salida),letter-spacing .4s var(--salida)}
+.producto:hover .categoria-mini{color:var(--terracota-700);letter-spacing:.2em}
 .nota-mini{font-size:12.5px;color:var(--tinta-3);margin:0}
 .precios{display:flex;align-items:baseline;gap:11px;margin-top:auto;padding-top:9px;font-variant-numeric:tabular-nums}
 .precio{font-family:Fraunces,serif;font-size:25px;font-weight:700}
 .precio-antes{font-size:14.5px;color:var(--tinta-3);text-decoration:line-through}
 .envio-mini{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--verde);font-weight:600}
-.btn-comprar{position:relative;width:100%;background:var(--tinta);color:#fff;font-family:Inter,sans-serif;font-weight:600;font-size:15px;padding:15px;border-radius:0;min-height:52px;border:none;cursor:pointer;overflow:hidden;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:9px;margin-top:9px}
-.btn-comprar::before{content:"";position:absolute;inset:0;background:var(--terracota-600);transform:translateY(101%);transition:transform .45s var(--salida);z-index:1}
-.btn-comprar:hover::before{transform:translateY(0);border-radius:0}
-.btn-comprar span{position:relative;z-index:2}
+.btn-comprar{position:relative;width:100%;background:var(--tinta);color:#fff;font-family:Inter,sans-serif;font-weight:600;font-size:15px;padding:0 15px;border-radius:0;min-height:54px;border:none;cursor:pointer;overflow:hidden;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;margin-top:9px;letter-spacing:.02em}
+/* Relleno que entra en diagonal */
+.btn-comprar::before{content:"";position:absolute;top:-10%;bottom:-10%;left:-20%;width:140%;background:var(--terracota-600);transform:translateX(-102%) skewX(-14deg);transition:transform .5s cubic-bezier(.65,0,.35,1);z-index:1}
+.btn-comprar:hover::before,.btn-comprar:focus-visible::before{transform:translateX(0) skewX(-14deg)}
+/* Destello que barre */
+.btn-comprar::after{content:"";position:absolute;top:0;left:-140%;width:50%;height:100%;z-index:3;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-22deg);transition:left .8s var(--salida)}
+.btn-comprar:hover::after{left:170%}
+/* El texto sube y entra otra copia */
+.btn-comprar .marco-b{position:relative;z-index:2;display:block;overflow:hidden;height:1.5em;line-height:1.5em;width:100%;text-align:center}
+.btn-comprar .doble-b{display:block;position:relative;transition:transform .45s var(--salida)}
+.btn-comprar .doble-b::after{content:attr(data-t);position:absolute;top:100%;left:0;right:0;white-space:nowrap}
+.btn-comprar:hover .doble-b{transform:translateY(-100%)}
 .vacio{padding:60px 0;color:var(--tinta-2);text-align:center}
 
 /* ====== TALLER ====== */
@@ -861,7 +881,7 @@ function pintarCatalogo(cat){
           ${p.nota ? `<p class="nota-mini">${p.nota}</p>` : ""}
           <div class="precios"><span class="precio">${pesos(p.p)}</span>${p.antes ? `<span class="precio-antes">${pesos(p.antes)}</span>` : ""}</div>
           <span class="envio-mini"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Envío gratis</span>
-          <button class="btn-comprar" data-id="${p.id}"><span>Comprar</span></button>
+          <button class="btn-comprar" data-id="${p.id}"><span class="marco-b"><span class="doble-b" data-t="Al carrito">Comprar</span></span></button>
         </div>
       </article>`;
   }).join("");
