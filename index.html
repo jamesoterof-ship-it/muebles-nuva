@@ -391,9 +391,10 @@ details p{padding:0 28px 26px;margin:0;color:var(--tinta-2);font-size:16px}
   /* Las fotos son cuadradas: en cajas bajas el mueble salía cortado.
      Aquí la tarjeta respeta la proporción de la foto. */
   .bento{grid-template-columns:repeat(2,1fr);grid-auto-rows:auto;gap:12px}
-  .tarj-cat{aspect-ratio:1/1}
-  .c-grande{grid-column:span 2;aspect-ratio:16/11}
-  .c-alta{grid-row:span 1}
+  /* Solo la primera ocupa el ancho completo; las otras cuatro van
+     cuadradas en 2x2 para que no quede ningún hueco. */
+  .tarj-cat,.bento .c-grande,.bento .c-alta{aspect-ratio:1/1;grid-column:span 1;grid-row:span 1}
+  .bento>:first-child{grid-column:span 2;aspect-ratio:16/11}
   .tarj-cat .rotulo{left:15px;right:15px;bottom:14px}
   .tarj-cat .rotulo h3{font-size:17px}
   .tarj-cat .rotulo small{font-size:11.5px}
@@ -404,7 +405,11 @@ details p{padding:0 28px 26px;margin:0;color:var(--tinta-2);font-size:16px}
   .baja{display:none}
   .producto .cuerpo{padding:15px 15px 17px}
   .producto h3{font-size:16px}
-  .precio{font-size:20px}
+  /* Si no caben en una línea, el precio tachado baja; antes se cortaba */
+  .precios{flex-wrap:wrap;gap:2px 9px}
+  .precio{font-size:19px}
+  .precio-antes{font-size:13.5px}
+  .categoria-mini{font-size:10.5px;letter-spacing:.13em}
   .duo{grid-template-columns:1fr}
   .panel{width:100%}
   .rejilla-pie{grid-template-columns:1fr;gap:30px}
@@ -852,7 +857,7 @@ function pintarCatalogo(cat){
           <h3>${p.n}</h3>
           ${p.nota ? `<p class="nota-mini">${p.nota}</p>` : ""}
           <div class="precios"><span class="precio">${pesos(p.p)}</span>${p.antes ? `<span class="precio-antes">${pesos(p.antes)}</span>` : ""}</div>
-          <span class="envio-mini"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Envío gratis incluido</span>
+          <span class="envio-mini"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Envío gratis</span>
           <button class="btn-comprar" data-id="${p.id}"><span>Comprar</span></button>
         </div>
       </article>`;
