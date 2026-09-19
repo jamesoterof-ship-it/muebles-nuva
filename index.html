@@ -79,10 +79,10 @@ h1,h2,h3,h4{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.08;
 @keyframes correr{to{transform:translateX(-50%)}}
 
 /* ====== CABECERA ====== */
-.cabecera{position:fixed;top:42px;left:0;right:0;z-index:150;transition:top .3s var(--e),background .3s var(--e),box-shadow .3s var(--e),transform .4s var(--salida)}
+/* Siempre visible: fixed y sin ninguna regla que la desplace fuera de pantalla */
+.cabecera{position:fixed;top:42px;left:0;right:0;z-index:150;transition:top .3s var(--e),background .3s var(--e),box-shadow .3s var(--e)}
 .cabecera.compacta{top:0}
 .cabecera.solida{background:rgba(250,246,241,.88);backdrop-filter:saturate(1.7) blur(16px);box-shadow:0 4px 34px rgba(23,19,16,.09)}
-.cabecera.escondida{transform:translateY(-130%)}
 .cabecera .fila{display:flex;align-items:center;gap:26px;height:94px;transition:height .3s var(--e)}
 .cabecera.compacta .fila{height:74px}
 .logo{display:flex;align-items:center;gap:13px;flex-shrink:0;color:var(--tinta)}
@@ -1049,7 +1049,7 @@ const fondoPortada = document.getElementById("fondoPortada");
 const fondoLlamado = document.getElementById("fondoLlamado");
 const barra = document.getElementById("progresoScroll");
 const portada = document.querySelector(".portada");
-let tick = false, ultimaY = 0;
+let tick = false;
 
 function alDesplazar(){
   const y = window.scrollY;
@@ -1063,8 +1063,6 @@ function alDesplazar(){
   cabecera.classList.toggle("compacta", !arriba);
   cabecera.classList.toggle("claro", arriba);
   cabecera.classList.toggle("solida", !arriba);
-  cabecera.classList.toggle("escondida", y > ultimaY + 4 && y > portada.offsetHeight && !panel.classList.contains("abierto"));
-  ultimaY = y;
 
   if (!reduce){
     if (y < innerHeight) fondoPortada.style.transform = `translateY(${y * .32}px)`;
@@ -1075,9 +1073,21 @@ function alDesplazar(){
       fondoLlamado.style.transform = `translateY(${(avance - .5) * 62}px)`;
     }
   }
-  tick = false;
 }
-addEventListener("scroll", () => { if (!tick){ requestAnimationFrame(alDesplazar); tick = true; } }, {passive:true});
+/* Ojo: con la pestaña en segundo plano requestAnimationFrame no corre.
+   Por eso la bandera se libera AL ENTRAR al callback (no al salir) y
+   además se recalcula al volver a la pestaña; si no, la cabecera se
+   quedaba congelada para siempre. */
+function programar(){
+  if (tick) return;
+  tick = true;
+  if (document.hidden){ tick = false; alDesplazar(); return; }
+  requestAnimationFrame(() => { tick = false; alDesplazar(); });
+}
+addEventListener("scroll", programar, {passive:true});
+addEventListener("resize", programar, {passive:true});
+addEventListener("visibilitychange", () => { tick = false; alDesplazar(); });
+addEventListener("pageshow", () => { tick = false; alDesplazar(); });
 
 const observador = new IntersectionObserver(entradas => {
   entradas.forEach(e => { if (e.isIntersecting){ e.target.classList.add("visible"); observador.unobserve(e.target); } });
