@@ -222,7 +222,9 @@ h1,h2,h3,h4{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.08;
 /* ====== TALLER ====== */
 .taller{position:relative;background:var(--tinta);color:#EDE3D9;overflow:hidden}
 .taller::before{content:"";position:absolute;top:-16%;left:-10%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(211,84,0,.2),transparent 68%)}
-.taller .rejilla{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;padding:112px 0}
+/* Ojo: el padding va con los dos valores. Con `112px 0` se borraba el
+   lateral que hereda de .envoltura y el texto quedaba pegado al borde. */
+.taller .rejilla{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;padding:112px 24px}
 .taller h2{color:#fff}
 .taller h2 em{color:var(--laton-claro)}
 .taller .bajada{color:#BFB2A7}
@@ -397,7 +399,7 @@ details p{padding:0 28px 26px;margin:0;color:var(--tinta-2);font-size:16px}
   .tarj-cat .rotulo small{font-size:11.5px}
   .tarj-cat .flecha{width:34px;height:34px}
   .seccion{padding:72px 0}
-  .taller .rejilla{padding:72px 0}
+  .taller .rejilla{padding:72px 20px}
   .portada .envoltura{padding-top:140px;padding-bottom:92px}
   .baja{display:none}
   .producto .cuerpo{padding:15px 15px 17px}
