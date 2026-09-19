@@ -24,7 +24,7 @@
   --max:1240px;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:hidden}
 body{margin:0;background:var(--crema);color:var(--tinta);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body.bloqueado{overflow:hidden}
 img{max-width:100%;display:block}
@@ -33,20 +33,23 @@ h1,h2,h3,h4{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.08;
 .envoltura{max-width:var(--max);margin:0 auto;padding:0 24px}
 :focus-visible{outline:3px solid var(--terracota-700);outline-offset:3px;border-radius:8px}
 
-/* ====== TIPOGRAFÍA EN CASCADA ====== */
+/* ====== TIPOGRAFÍA EN CASCADA ======
+   El estado oculto SOLO aplica con <html class="anim">, que pone el JS.
+   Si el JS falla o el navegador congela las animaciones, el texto se ve
+   igual en vez de quedarse invisible. */
 .pal{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.1em;margin-bottom:-.1em}
-.pal-in{display:inline-block;transform:translateY(118%) rotate(4deg);transform-origin:left top;transition:transform 1.05s var(--salida)}
-.casc.visible .pal-in{transform:translateY(0) rotate(0)}
-.casc.visible .pal-in{transform:translateY(0)}
+.pal-in{display:inline-block;transform-origin:left top}
+.anim .pal-in{transform:translateY(118%) rotate(4deg);transition:transform 1.05s var(--salida)}
+.anim .casc.visible .pal-in{transform:translateY(0) rotate(0)}
 
 /* Revelado genérico */
-.rev{opacity:0;transform:translateY(28px);transition:opacity .8s var(--salida),transform .8s var(--salida)}
-.rev.visible{opacity:1;transform:none}
+.anim .rev{opacity:0;transform:translateY(28px);transition:opacity .8s var(--salida),transform .8s var(--salida)}
+.anim .rev.visible{opacity:1;transform:none}
 /* Revelado de imagen con cortina */
-.cortina{clip-path:inset(0 0 100% 0);transition:clip-path 1.15s var(--salida)}
-.cortina.visible{clip-path:inset(0 0 0 0)}
-.cortina img{transform:scale(1.16);transition:transform 1.5s var(--salida)}
-.cortina.visible img{transform:scale(1)}
+.anim .cortina{clip-path:inset(0 0 100% 0);transition:clip-path 1.15s var(--salida)}
+.anim .cortina.visible{clip-path:inset(0 0 0 0)}
+.anim .cortina img{transform:scale(1.16);transition:transform 1.5s var(--salida)}
+.anim .cortina.visible img{transform:scale(1)}
 
 /* ====== BARRA DE PROGRESO ====== */
 .progreso-scroll{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--terracota),var(--laton));z-index:500;transition:width .1s linear}
@@ -188,8 +191,9 @@ h1,h2,h3,h4{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.08;
 
 /* ====== PRODUCTOS ====== */
 .rejilla-productos{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
-.producto{position:relative;background:var(--blanco);border:1px solid var(--linea);border-radius:var(--r-lg);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(24px);transition:opacity .65s var(--salida),transform .65s var(--salida),box-shadow .45s var(--salida),border-color .45s var(--salida)}
-.producto.visible{opacity:1;transform:none}
+.producto{position:relative;background:var(--blanco);border:1px solid var(--linea);border-radius:var(--r-lg);overflow:hidden;display:flex;flex-direction:column;transition:opacity .65s var(--salida),transform .65s var(--salida),box-shadow .45s var(--salida),border-color .45s var(--salida)}
+.anim .producto{opacity:0;transform:translateY(24px)}
+.anim .producto.visible{opacity:1;transform:none}
 .producto:hover{box-shadow:var(--s2);border-color:transparent;transform:translateY(-8px)}
 .producto .foto{position:relative;aspect-ratio:1/1;background:var(--crema-2);overflow:hidden}
 .producto .foto img{width:100%;height:100%;object-fit:cover;transition:transform .95s var(--salida)}
@@ -406,6 +410,23 @@ details p{padding:0 28px 26px;margin:0;color:var(--tinta-2);font-size:16px}
   .acciones{gap:11px}
   .acciones .btn{width:100%}
   .sello{font-size:11px;padding:9px 16px;margin-bottom:22px}
+}
+/* ====== MÓVIL: animaciones sobrias ======
+   La cascada palabra por palabra tarda hasta 1,5 s en un titular largo y en
+   el teléfono se percibe como un título vacío. Aquí se muestra de una, con
+   una aparición corta. */
+@media (max-width:780px){
+  .anim .pal-in{transform:none!important;transition:none}
+  .anim .casc{opacity:0;transform:translateY(14px);transition:opacity .45s var(--salida),transform .45s var(--salida)}
+  .anim .casc.visible{opacity:1;transform:none}
+  .anim .rev{transform:translateY(16px);transition:opacity .5s var(--salida),transform .5s var(--salida)}
+  .anim .cortina{transition:clip-path .7s var(--salida)}
+  .anim .cortina img{transform:none;transition:none}
+  /* En vertical el degradado lateral no tapa nada: se refuerza el de arriba */
+  .llamado::after{background:linear-gradient(180deg,rgba(23,19,16,.5) 0%,rgba(23,19,16,.84) 48%,rgba(23,19,16,.95) 100%)}
+  .llamado{min-height:auto}
+  .llamado .contenido{padding:66px 0}
+  .llamado p{font-size:16.5px}
 }
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
@@ -749,7 +770,12 @@ function partirTexto(elemento){
   elemento.innerHTML = "";
   elemento.appendChild(frag);
 }
-if (!reduce) document.querySelectorAll(".casc").forEach(partirTexto);
+const movil = innerWidth <= 780;
+if (!reduce){
+  document.documentElement.classList.add("anim");
+  /* La cascada solo en pantalla grande: en el teléfono se muestra de una */
+  if (!movil) document.querySelectorAll(".casc").forEach(partirTexto);
+}
 
 /* ========== MARQUESINAS ========== */
 const FRASES = ["Envío <b>gratis</b> a toda Colombia","Fabricación <b>propia</b> en Barranquilla","Medidas y colores <b>a tu gusto</b>","Showroom en el <b>Paseo Bolívar</b>"];
@@ -1064,7 +1090,8 @@ function alDesplazar(){
   cabecera.classList.toggle("claro", arriba);
   cabecera.classList.toggle("solida", !arriba);
 
-  if (!reduce){
+  /* Sin parallax en el teléfono: pesa y se ve a tirones */
+  if (!reduce && !movil){
     if (y < innerHeight) fondoPortada.style.transform = `translateY(${y * .32}px)`;
     const s = document.getElementById("llamado");
     const r = s.getBoundingClientRect();
@@ -1128,9 +1155,23 @@ pintarCatalogo("todos");
 actualizarGlobo();
 observarTodo();
 alDesplazar();
-/* La portada arranca su cascada apenas carga */
-requestAnimationFrame(() => document.querySelector(".portada .casc").classList.add("visible"));
-setTimeout(() => document.querySelectorAll(".portada .rev").forEach((el,i) => setTimeout(() => el.classList.add("visible"), 180 + i * 130)), 60);
+/* La portada se revela YA, sin esperar a requestAnimationFrame: si la
+   pestaña está en segundo plano el rAF no corre y el titular se quedaba
+   invisible. */
+document.querySelector(".portada .casc").classList.add("visible");
+document.querySelectorAll(".portada .rev").forEach((el,i) => setTimeout(() => el.classList.add("visible"), 150 + i * 130));
+
+/* Red de seguridad: nada puede quedarse invisible. Cada cierto tiempo, y
+   al volver a la pestaña, se revela todo lo que ya esté en pantalla. */
+function rescatarVisibles(){
+  document.querySelectorAll(".rev:not(.visible), .casc:not(.visible), .cortina:not(.visible), .producto:not(.visible)").forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (r.top < innerHeight + 100 && r.bottom > -100) el.classList.add("visible");
+  });
+}
+addEventListener("visibilitychange", () => { if (!document.hidden) rescatarVisibles(); });
+setInterval(rescatarVisibles, 1200);
+setTimeout(rescatarVisibles, 400);
 </script>
 </body>
 </html>
