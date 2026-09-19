@@ -59,9 +59,14 @@ h1,h2,h3,h4{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.08;
 .btn .txt,.btn .fle{position:relative;z-index:3;display:inline-flex;transition:transform .45s var(--salida)}
 .btn::before{content:"";position:absolute;top:-55%;bottom:-55%;left:-28%;width:156%;z-index:1;transform:translateX(-108%) skewX(-14deg);transition:transform .42s cubic-bezier(.65,0,.35,1)}
 .btn:hover::before,.btn:focus-visible::before{transform:translateX(0) skewX(-14deg)}
-.btn::after{content:"";position:absolute;top:0;left:-140%;width:55%;height:100%;z-index:2;background:linear-gradient(90deg,transparent,rgba(255,255,255,.38),transparent);transform:skewX(-22deg);transition:left .6s var(--salida)}
-.btn:hover::after{left:170%}
-.btn:hover .fle{transform:translateX(7px)}
+/* Destello en BUCLE: se ve solo, sin pasar el ratón ni tocar.
+   Es lo único que funciona igual en teléfono y en computador. */
+@keyframes destello{0%{left:-150%}45%{left:180%}100%{left:180%}}
+@keyframes empujar{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
+@keyframes latido{0%,100%{box-shadow:0 0 0 0 rgba(190,76,0,.45)}70%{box-shadow:0 0 0 16px rgba(190,76,0,0)}}
+.btn::after{content:"";position:absolute;top:0;left:-150%;width:58%;height:100%;z-index:2;background:linear-gradient(90deg,transparent,rgba(255,255,255,.42),transparent);transform:skewX(-22deg);animation:destello 3.4s ease-in-out infinite}
+.btn .fle{animation:empujar 1.9s ease-in-out infinite}
+.btn-primario{animation:latido 2.8s ease-out infinite}
 .btn:hover .txt{transform:translateX(-2px)}
 .btn:active{transform:scale(.97)}
 .btn-primario{background:var(--terracota-600);color:#fff}
@@ -232,8 +237,7 @@ h1,h2,h3,h4{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.08;
 .btn-comprar::before{content:"";position:absolute;top:-55%;bottom:-55%;left:-28%;width:156%;background:var(--terracota-600);transform:translateX(-108%) skewX(-14deg);transition:transform .45s cubic-bezier(.65,0,.35,1);z-index:1}
 .btn-comprar:hover::before,.btn-comprar:focus-visible::before{transform:translateX(0) skewX(-14deg)}
 /* Destello que barre */
-.btn-comprar::after{content:"";position:absolute;top:0;left:-140%;width:50%;height:100%;z-index:3;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-22deg);transition:left .8s var(--salida)}
-.btn-comprar:hover::after{left:170%}
+.btn-comprar::after{content:"";position:absolute;top:0;left:-150%;width:52%;height:100%;z-index:3;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-22deg);animation:destello 3.8s ease-in-out infinite;animation-delay:var(--retardo,0s)}
 /* El texto sube y entra otra copia */
 .btn-comprar .marco-b{position:relative;z-index:2;display:block;overflow:hidden;height:1.5em;line-height:1.5em;width:100%;text-align:center}
 .btn-comprar .doble-b{display:block;position:relative;transition:transform .45s var(--salida)}
@@ -897,7 +901,7 @@ function pintarCatalogo(cat){
   vacio.hidden = lista.length > 0;
   rejilla.innerHTML = lista.map((p, i) => {
     const dcto = p.antes ? Math.round((1 - p.p / p.antes) * 100) : 0;
-    return `<article class="producto" style="transition-delay:${i * 60}ms">
+    return `<article class="producto" style="transition-delay:${i * 60}ms;--retardo:${(i % 5) * 0.7}s">
         <div class="foto">
           ${dcto ? `<span class="etiqueta">-${dcto}%</span>` : ""}
           <img src="${foto(p.img)}" alt="${p.n} de MUEBLES NUVA" loading="lazy" width="600" height="600">
