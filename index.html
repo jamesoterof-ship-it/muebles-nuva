@@ -425,8 +425,9 @@ details p{padding:0 28px 26px;margin:0;color:var(--tinta-2);font-size:16px}
   .baja{display:none}
   .producto .cuerpo{padding:13px 0 0}
   .producto h3{font-size:16px}
-  /* Si no caben en una línea, el precio tachado baja; antes se cortaba */
-  .precios{flex-wrap:wrap;gap:2px 9px}
+  /* Siempre en columna: si unas envuelven y otras no, los precios de la
+     misma fila quedan a distinta altura y se ve descuadrado. */
+  .precios{flex-direction:column;align-items:flex-start;gap:1px}
   .precio{font-size:19px}
   .precio-antes{font-size:13.5px}
   .categoria-mini{font-size:10.5px;letter-spacing:.13em}
@@ -471,6 +472,32 @@ details p{padding:0 28px 26px;margin:0;color:var(--tinta-2);font-size:16px}
   .llamado{min-height:auto}
   .llamado .contenido{padding:66px 0}
   .llamado p{font-size:16.5px}
+}
+/* ====== PANTALLAS TÁCTILES ======
+   Sin ratón no hay hover, así que aquí los efectos son al TOCAR y al
+   entrar en pantalla. */
+@media (hover:none){
+  /* La foto se revela de abajo hacia arriba al aparecer */
+  .anim .producto .foto img{clip-path:inset(0 0 100% 0);transform:scale(1.08)}
+  .anim .producto.visible .foto img{clip-path:inset(0 0 0 0);transform:scale(1);
+    transition:clip-path 1s var(--salida),transform 1.3s var(--salida),filter .5s}
+  /* El marco fino queda visible, discreto */
+  .producto .foto::before{opacity:.5;transform:scale(1);inset:10px}
+  /* Al presionar: se hunde, la foto se aviva y entra el velo de color */
+  .producto:active{transform:scale(.982)}
+  .producto:active .foto img{transform:scale(1.05);filter:saturate(1.1) contrast(1.03)}
+  .producto:active .foto::after{opacity:1}
+  .producto:active h3::after{transform:scaleX(1)}
+  .btn-comprar:active{transform:scale(.985)}
+  .btn-comprar:active::before{transform:translateX(0) skewX(-14deg)}
+  /* El texto no rota (no hay hover), pero el botón sí responde */
+  .btn-comprar .doble-b::after{display:none}
+  /* Categorías y botones grandes también responden al toque */
+  .tarj-cat:active{transform:scale(.985)}
+  .tarj-cat:active img{transform:scale(1.06)}
+  .btn:active{transform:scale(.985)}
+  .btn:active::before{transform:translateY(0);border-radius:0}
+  .filtro:active{transform:scale(.97)}
 }
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
