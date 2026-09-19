@@ -35,7 +35,8 @@ h1,h2,h3,h4{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.08;
 
 /* ====== TIPOGRAFÍA EN CASCADA ====== */
 .pal{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.1em;margin-bottom:-.1em}
-.pal-in{display:inline-block;transform:translateY(118%);transition:transform .9s var(--salida)}
+.pal-in{display:inline-block;transform:translateY(118%) rotate(4deg);transform-origin:left top;transition:transform 1.05s var(--salida)}
+.casc.visible .pal-in{transform:translateY(0) rotate(0)}
 .casc.visible .pal-in{transform:translateY(0)}
 
 /* Revelado genérico */
@@ -79,24 +80,26 @@ h1,h2,h3,h4{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.08;
 
 /* ====== CABECERA ====== */
 .cabecera{position:fixed;top:42px;left:0;right:0;z-index:150;transition:top .3s var(--e),background .3s var(--e),box-shadow .3s var(--e),transform .4s var(--salida)}
-.cabecera.pegada{top:0;background:rgba(250,246,241,.85);backdrop-filter:saturate(1.7) blur(16px);box-shadow:0 4px 34px rgba(23,19,16,.09)}
-.cabecera.escondida{transform:translateY(-120%)}
+.cabecera.compacta{top:0}
+.cabecera.solida{background:rgba(250,246,241,.88);backdrop-filter:saturate(1.7) blur(16px);box-shadow:0 4px 34px rgba(23,19,16,.09)}
+.cabecera.escondida{transform:translateY(-130%)}
 .cabecera .fila{display:flex;align-items:center;gap:26px;height:94px;transition:height .3s var(--e)}
-.cabecera.pegada .fila{height:74px}
+.cabecera.compacta .fila{height:74px}
 .logo{display:flex;align-items:center;gap:13px;flex-shrink:0;color:var(--tinta)}
 .logo .simbolo{width:48px;height:48px;flex-shrink:0;transition:transform .45s var(--salida),width .3s var(--e),height .3s var(--e)}
 .logo:hover .simbolo{transform:rotate(-5deg) scale(1.05)}
 .logo .palabra{display:flex;flex-direction:column;line-height:1}
 .logo .arriba{font-family:Inter,sans-serif;font-size:9.5px;font-weight:600;letter-spacing:.44em;color:var(--tinta-3);margin-bottom:4px;text-transform:uppercase;transition:color var(--e)}
 .logo .abajo{font-family:Fraunces,serif;font-size:28px;font-weight:700;letter-spacing:.15em}
-.cabecera.pegada .logo .simbolo{width:40px;height:40px}
-.cabecera.pegada .logo .abajo{font-size:24px}
+.cabecera.compacta .logo .simbolo{width:40px;height:40px}
+.cabecera.compacta .logo .abajo{font-size:24px}
 .claro .logo{color:#fff}
 .claro .logo .arriba{color:rgba(255,255,255,.65)}
 .claro .menu a{color:#fff}
 .claro .hamburguesa{color:#fff;border-color:rgba(255,255,255,.3)}
 .menu{display:flex;gap:2px;margin-left:auto}
-.menu a{position:relative;color:var(--tinta);font-size:14.5px;font-weight:500;padding:12px 17px;overflow:hidden}
+.menu a{position:relative;color:var(--tinta);font-size:14.5px;font-weight:500;padding:12px 17px;display:inline-block}
+.menu a .marco{display:block;overflow:hidden;height:1.5em;line-height:1.5em}
 .menu a .doble{display:block;position:relative;transition:transform .42s var(--salida)}
 .menu a .doble::after{content:attr(data-t);position:absolute;top:100%;left:0;white-space:nowrap}
 .menu a:hover .doble{transform:translateY(-100%)}
@@ -367,10 +370,14 @@ details p{padding:0 28px 26px;margin:0;color:var(--tinta-2);font-size:16px}
   .rejilla-pie{grid-template-columns:1fr 1fr;gap:34px}
 }
 @media (max-width:780px){
+  .envoltura{padding:0 20px}
   .menu{display:none}
-  .hamburguesa{display:flex;order:3}
-  .btn-carrito{margin-left:auto;order:2;padding:13px 17px}
+  .cabecera .fila{gap:10px}
+  .hamburguesa{display:flex;order:3;width:46px;height:46px;flex-shrink:0}
+  .btn-carrito{margin-left:auto;order:2;padding:12px 14px;gap:8px;flex-shrink:0}
   .btn-carrito .txt-carrito{display:none}
+  .logo{gap:9px;min-width:0}
+  .logo .arriba{font-size:8px;letter-spacing:.34em;margin-bottom:3px}
   .menu.abierto{display:flex;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--crema);border-bottom:1px solid var(--linea);padding:12px 20px 20px;gap:2px;box-shadow:var(--s2)}
   .menu.abierto a{padding:15px 12px;color:var(--tinta)}
   .rejilla-productos{grid-template-columns:repeat(2,1fr);gap:16px}
@@ -388,10 +395,17 @@ details p{padding:0 28px 26px;margin:0;color:var(--tinta-2);font-size:16px}
   .rejilla-pie{grid-template-columns:1fr;gap:30px}
   .capa-hover{display:none}
   .collage .alto{aspect-ratio:3/4}
-  .cabecera .fila{height:78px}
-  .logo .abajo{font-size:23px}
-  .logo .simbolo{width:42px;height:42px}
+  .cabecera .fila{height:76px}
+  .logo .abajo{font-size:20px;letter-spacing:.12em}
+  .logo .simbolo{width:38px;height:38px}
+  .cabecera.compacta .logo .simbolo{width:34px;height:34px}
+  .cabecera.compacta .logo .abajo{font-size:19px}
   .cinta span{padding:0 18px;gap:18px}
+  .portada h1{font-size:clamp(34px,10vw,46px);max-width:none}
+  .entradilla{font-size:17px}
+  .acciones{gap:11px}
+  .acciones .btn{width:100%}
+  .sello{font-size:11px;padding:9px 16px;margin-bottom:22px}
 }
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
@@ -428,11 +442,11 @@ details p{padding:0 28px 26px;margin:0;color:var(--tinta-2);font-size:16px}
       <span class="palabra"><span class="arriba">Muebles</span><span class="abajo">NUVA</span></span>
     </a>
     <nav class="menu" id="menuPrincipal" aria-label="Navegación principal">
-      <a href="#categorias"><span class="doble" data-t="Categorías">Categorías</span></a>
-      <a href="#catalogo"><span class="doble" data-t="Catálogo">Catálogo</span></a>
-      <a href="#taller"><span class="doble" data-t="El taller">El taller</span></a>
-      <a href="#showroom"><span class="doble" data-t="Showroom">Showroom</span></a>
-      <a href="#preguntas"><span class="doble" data-t="Preguntas">Preguntas</span></a>
+      <a href="#categorias"><span class="marco"><span class="doble" data-t="Categorías">Categorías</span></span></a>
+      <a href="#catalogo"><span class="marco"><span class="doble" data-t="Catálogo">Catálogo</span></span></a>
+      <a href="#fabrica"><span class="marco"><span class="doble" data-t="La fábrica">La fábrica</span></span></a>
+      <a href="#showroom"><span class="marco"><span class="doble" data-t="Showroom">Showroom</span></span></a>
+      <a href="#preguntas"><span class="marco"><span class="doble" data-t="Preguntas">Preguntas</span></span></a>
     </nav>
     <button class="btn-carrito" id="btnCarrito" aria-label="Abrir el carrito de compras">
       <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 6H6"/></svg>
@@ -453,13 +467,13 @@ details p{padding:0 28px 26px;margin:0;color:var(--tinta-2);font-size:16px}
     <div class="envoltura">
       <span class="sello rev">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
-        Taller propio en Barranquilla
+        Fábrica propia en Barranquilla
       </span>
       <h1 class="casc">Muebles que le dan <em>carácter</em> a tu casa.</h1>
       <p class="entradilla rev">Recibidores, espejos, mesas de centro, camas y sofás hechos a mano, pieza por pieza. Te los llevamos hasta tu puerta con el <strong>envío incluido en el precio</strong>, a cualquier ciudad de Colombia.</p>
       <div class="acciones rev">
         <a class="btn btn-primario magnetico" href="#catalogo"><span class="txt">Ver el catálogo</span><span class="fle"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></a>
-        <a class="btn btn-claro magnetico" href="#taller"><span class="txt">Conoce el taller</span></a>
+        <a class="btn btn-claro magnetico" href="#fabrica"><span class="txt">Conoce la fábrica</span></a>
       </div>
     </div>
     <div class="baja" aria-hidden="true">Desliza<span class="riel"></span></div>
@@ -470,7 +484,7 @@ details p{padding:0 28px 26px;margin:0;color:var(--tinta-2);font-size:16px}
     <div class="envoltura">
       <ul>
         <li class="rev"><span class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></span><span><b>Envío gratis</b><span>Incluido en el precio, a toda Colombia</span></span></li>
-        <li class="rev"><span class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2l1.5 5L21 8l-4 3.5 1 5.5-5-2.8L8 17l1-5.5L5 8l5.5-1z"/></svg></span><span><b>Taller propio</b><span>Lo fabricamos nosotros, sin intermediarios</span></span></li>
+        <li class="rev"><span class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2l1.5 5L21 8l-4 3.5 1 5.5-5-2.8L8 17l1-5.5L5 8l5.5-1z"/></svg></span><span><b>Fábrica propia</b><span>Lo fabricamos nosotros, sin intermediarios</span></span></li>
         <li class="rev"><span class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span><span><b>Compra acompañada</b><span>Te avisamos en cada paso del pedido</span></span></li>
         <li class="rev"><span class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span><span><b>Showroom</b><span>Visítanos en el Paseo Bolívar, Barranquilla</span></span></li>
       </ul>
@@ -514,12 +528,12 @@ details p{padding:0 28px 26px;margin:0;color:var(--tinta-2);font-size:16px}
   </section>
 
   <!-- TALLER -->
-  <section class="taller" id="taller">
+  <section class="taller" id="fabrica">
     <div class="envoltura rejilla">
       <div>
-        <span class="tapa rev">El taller</span>
+        <span class="tapa rev">La fábrica</span>
         <h2 class="casc">Aquí no se <em>revende</em>: se fabrica</h2>
-        <p class="bajada rev">Cada mueble sale de nuestro taller en Barranquilla. Por eso podemos cambiarte una medida, un color o un acabado sin que tengas que conformarte con lo que hay.</p>
+        <p class="bajada rev">Cada mueble sale de nuestra fábrica en Barranquilla. Por eso podemos cambiarte una medida, un color o un acabado sin que tengas que conformarte con lo que hay.</p>
         <ul class="linea-tiempo rev">
           <li><span class="n">01</span><span><b>Diseño y medidas</b><em>Definimos la pieza según tu espacio y lo que necesitas.</em></span></li>
           <li><span class="n">02</span><span><b>Estructura y soldadura</b><em>Armamos la base metálica con acabado en dorado o negro.</em></span></li>
@@ -528,7 +542,7 @@ details p{padding:0 28px 26px;margin:0;color:var(--tinta-2);font-size:16px}
         </ul>
       </div>
       <div class="collage">
-        <div class="alto cortina"><img src="https://dcdn-us.mitiendanube.com/stores/006/049/571/products/img_3932-748fb7d102ef44639b17437878703336-1024-1024.webp" alt="Recibidor Elizabeth fabricado en el taller" loading="lazy"></div>
+        <div class="alto cortina"><img src="https://dcdn-us.mitiendanube.com/stores/006/049/571/products/img_3932-748fb7d102ef44639b17437878703336-1024-1024.webp" alt="Recibidor Elizabeth fabricado en nuestra fábrica" loading="lazy"></div>
         <div class="bajo cortina"><img src="https://dcdn-us.mitiendanube.com/stores/006/049/571/products/img_1872-e29ae3f9cbef02162117437405994975-1024-1024.webp" alt="Espejo circular Begonia" loading="lazy"></div>
         <div class="bajo cortina"><img src="https://dcdn-us.mitiendanube.com/stores/006/049/571/products/img_7590-54291ccc45e269cb3a17437395976401-1024-1024.webp" alt="Mesa de centro Dúo Alba" loading="lazy"></div>
       </div>
@@ -553,7 +567,7 @@ details p{padding:0 28px 26px;margin:0;color:var(--tinta-2);font-size:16px}
       <div class="contenido">
         <span class="tapa rev" style="color:var(--laton-claro)">¿Algo a la medida?</span>
         <h2 class="casc">Si no está en el catálogo, <em>lo fabricamos</em></h2>
-        <p class="rev">Dinos la medida, el color y el acabado que necesitas. Al ser taller propio podemos hacer la pieza exacta para tu espacio.</p>
+        <p class="rev">Dinos la medida, el color y el acabado que necesitas. Al ser fábrica propia podemos hacer la pieza exacta para tu espacio.</p>
         <a class="btn btn-claro magnetico rev" href="#showroom"><span class="txt">Escríbenos tu idea</span><span class="fle"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></a>
       </div>
     </div>
@@ -588,7 +602,7 @@ details p{padding:0 28px 26px;margin:0;color:var(--tinta-2);font-size:16px}
         <details open><summary>¿El envío tiene algún costo?</summary><p>No. El envío ya está incluido en el precio que ves en cada mueble, a cualquier ciudad de Colombia.</p></details>
         <details><summary>¿Cómo se paga?</summary><p>Por transferencia bancaria o Nequi antes del despacho. Al terminar el formulario te mostramos los datos de la cuenta y el número de tu pedido.</p></details>
         <details><summary>¿Cuánto se demora en llegar?</summary><p>Depende del mueble y de tu ciudad. Al confirmar tu pago te damos la fecha exacta de entrega.</p></details>
-        <details><summary>¿Puedo pedirlo en otro color o medida?</summary><p>Sí. Fabricamos en nuestro propio taller, así que podemos ajustar color, medidas y acabados. Escríbelo en las notas de tu pedido y te confirmamos.</p></details>
+        <details><summary>¿Puedo pedirlo en otro color o medida?</summary><p>Sí. Fabricamos en nuestra propia fábrica, así que podemos ajustar color, medidas y acabados. Escríbelo en las notas de tu pedido y te confirmamos.</p></details>
         <details><summary>¿Los recibidores traen el espejo?</summary><p>No. En los recibidores el precio publicado no incluye el espejo; lo puedes agregar aparte eligiendo uno de nuestros espejos.</p></details>
       </div>
     </div>
@@ -623,7 +637,7 @@ details p{padding:0 28px 26px;margin:0;color:var(--tinta-2);font-size:16px}
       </div>
       <div>
         <h4>Tienda</h4>
-        <a href="#categorias">Categorías</a><a href="#catalogo">Catálogo</a><a href="#taller">El taller</a><a href="#preguntas">Preguntas frecuentes</a>
+        <a href="#categorias">Categorías</a><a href="#catalogo">Catálogo</a><a href="#fabrica">La fábrica</a><a href="#preguntas">Preguntas frecuentes</a>
       </div>
       <div>
         <h4>Ayuda</h4>
@@ -720,7 +734,7 @@ function partirTexto(elemento){
           const ext = document.createElement("span"); ext.className = "pal";
           const int = document.createElement("span"); int.className = "pal-in";
           int.textContent = t;
-          int.style.transitionDelay = (i++ * 55) + "ms";
+          int.style.transitionDelay = (i++ * 90) + "ms";
           ext.appendChild(int); destino.appendChild(ext);
         });
       } else if (n.nodeType === 1){
@@ -1042,9 +1056,14 @@ function alDesplazar(){
   const alto = document.documentElement.scrollHeight - innerHeight;
   barra.style.width = (alto > 0 ? (y / alto) * 100 : 0) + "%";
 
-  cabecera.classList.toggle("pegada", y > 46);
-  cabecera.classList.toggle("claro", y < portada.offsetHeight - 120);
-  cabecera.classList.toggle("escondida", y > ultimaY && y > 620 && !panel.classList.contains("abierto"));
+  /* Arriba del todo: transparente con letras blancas sobre la foto.
+     Apenas se mueve: fondo sólido y letras oscuras, para que el logo
+     no se monte encima del titular. */
+  const arriba = y < 40;
+  cabecera.classList.toggle("compacta", !arriba);
+  cabecera.classList.toggle("claro", arriba);
+  cabecera.classList.toggle("solida", !arriba);
+  cabecera.classList.toggle("escondida", y > ultimaY + 4 && y > portada.offsetHeight && !panel.classList.contains("abierto"));
   ultimaY = y;
 
   if (!reduce){
@@ -1062,7 +1081,7 @@ addEventListener("scroll", () => { if (!tick){ requestAnimationFrame(alDesplazar
 
 const observador = new IntersectionObserver(entradas => {
   entradas.forEach(e => { if (e.isIntersecting){ e.target.classList.add("visible"); observador.unobserve(e.target); } });
-}, {threshold:.1, rootMargin:"0px 0px -50px 0px"});
+}, {threshold:.1, rootMargin:"0px 0px -130px 0px"});
 
 function observarTodo(){
   document.querySelectorAll(".rev:not(.visible), .casc:not(.visible), .cortina:not(.visible)").forEach(el => observador.observe(el));
