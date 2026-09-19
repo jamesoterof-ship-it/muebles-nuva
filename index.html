@@ -57,11 +57,13 @@ h1,h2,h3,h4{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.08;
 /* ====== BOTONES ====== */
 .btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:11px;font-family:Inter,sans-serif;font-weight:600;font-size:16px;padding:18px 32px;border-radius:999px;min-height:58px;cursor:pointer;border:1px solid transparent;overflow:hidden;isolation:isolate;transition:transform .35s var(--salida),color var(--e),border-color var(--e)}
 .btn .txt,.btn .fle{position:relative;z-index:3;display:inline-flex;transition:transform .45s var(--salida)}
-.btn::before{content:"";position:absolute;left:-10%;right:-10%;top:0;bottom:0;z-index:1;transform:translateY(101%);border-radius:44% 44% 0 0;transition:transform .55s cubic-bezier(.65,0,.35,1),border-radius .55s cubic-bezier(.65,0,.35,1)}
-.btn:hover::before,.btn:focus-visible::before{transform:translateY(0);border-radius:0}
-.btn::after{content:"";position:absolute;top:0;left:-140%;width:55%;height:100%;z-index:2;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);transform:skewX(-22deg);transition:left .85s var(--salida)}
-.btn:hover::after{left:160%}
-.btn:hover .fle{transform:translateX(5px)}
+.btn::before{content:"";position:absolute;top:-55%;bottom:-55%;left:-28%;width:156%;z-index:1;transform:translateX(-108%) skewX(-14deg);transition:transform .42s cubic-bezier(.65,0,.35,1)}
+.btn:hover::before,.btn:focus-visible::before{transform:translateX(0) skewX(-14deg)}
+.btn::after{content:"";position:absolute;top:0;left:-140%;width:55%;height:100%;z-index:2;background:linear-gradient(90deg,transparent,rgba(255,255,255,.38),transparent);transform:skewX(-22deg);transition:left .6s var(--salida)}
+.btn:hover::after{left:170%}
+.btn:hover .fle{transform:translateX(7px)}
+.btn:hover .txt{transform:translateX(-2px)}
+.btn:active{transform:scale(.97)}
 .btn-primario{background:var(--terracota-600);color:#fff}
 .btn-primario::before{background:var(--tinta)}
 .btn-fantasma{background:transparent;color:var(--tinta);border-color:#CDBFB1}
@@ -75,7 +77,7 @@ h1,h2,h3,h4{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.08;
 
 /* ====== MARQUESINA SUPERIOR ====== */
 .tira{background:var(--tinta);color:#EDE3D9;overflow:hidden;height:42px;display:flex;align-items:center}
-.tira .pista{display:flex;white-space:nowrap;animation:correr 36s linear infinite;will-change:transform}
+.tira .pista{display:flex;white-space:nowrap;animation:correr 19s linear infinite;will-change:transform}
 .tira span{display:inline-flex;align-items:center;gap:12px;font-size:12.5px;font-weight:600;letter-spacing:.17em;text-transform:uppercase;padding:0 24px}
 .tira b{color:var(--laton-claro)}
 .tira i{width:5px;height:5px;border-radius:50%;background:var(--terracota);display:inline-block}
@@ -145,7 +147,7 @@ h1,h2,h3,h4{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.08;
 
 /* ====== CINTA CINÉTICA ====== */
 .cinta{background:var(--crema-2);padding:38px 0;overflow:hidden;border-bottom:1px solid var(--linea)}
-.cinta .pista{display:flex;white-space:nowrap;animation:correr 30s linear infinite}
+.cinta .pista{display:flex;white-space:nowrap;animation:correr 13s linear infinite;will-change:transform}
 .cinta span{font-family:Fraunces,serif;font-size:clamp(38px,6vw,76px);font-weight:700;letter-spacing:-.03em;padding:0 30px;display:inline-flex;align-items:center;gap:30px;color:var(--tinta)}
 .cinta span.hueco{color:transparent;-webkit-text-stroke:1.4px var(--laton)}
 .cinta .punto{width:11px;height:11px;border-radius:50%;background:var(--terracota);flex-shrink:0}
@@ -227,7 +229,7 @@ h1,h2,h3,h4{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.08;
 .envio-mini{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--verde);font-weight:600}
 .btn-comprar{position:relative;width:100%;background:var(--tinta);color:#fff;font-family:Inter,sans-serif;font-weight:600;font-size:15px;padding:0 15px;border-radius:0;min-height:54px;border:none;cursor:pointer;overflow:hidden;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;margin-top:9px;letter-spacing:.02em}
 /* Relleno que entra en diagonal */
-.btn-comprar::before{content:"";position:absolute;top:-10%;bottom:-10%;left:-20%;width:140%;background:var(--terracota-600);transform:translateX(-102%) skewX(-14deg);transition:transform .5s cubic-bezier(.65,0,.35,1);z-index:1}
+.btn-comprar::before{content:"";position:absolute;top:-55%;bottom:-55%;left:-28%;width:156%;background:var(--terracota-600);transform:translateX(-108%) skewX(-14deg);transition:transform .45s cubic-bezier(.65,0,.35,1);z-index:1}
 .btn-comprar:hover::before,.btn-comprar:focus-visible::before{transform:translateX(0) skewX(-14deg)}
 /* Destello que barre */
 .btn-comprar::after{content:"";position:absolute;top:0;left:-140%;width:50%;height:100%;z-index:3;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-22deg);transition:left .8s var(--salida)}
@@ -852,7 +854,7 @@ if (!reduce){
 const FRASES = ["Envío <b>gratis</b> a toda Colombia","Fabricación <b>propia</b> en Barranquilla","Medidas y colores <b>a tu gusto</b>","Showroom en el <b>Paseo Bolívar</b>"];
 document.getElementById("tiraPista").innerHTML = [0,1].map(() => FRASES.map(f => `<span>${f} <i aria-hidden="true"></i></span>`).join("")).join("");
 
-const CINTA = ["Hecho a mano","Barranquilla","Envío gratis","A tu medida"];
+const CINTA = ["Hecho a mano","Toda Colombia","Envío gratis","A tu medida"];
 document.getElementById("cintaPista").innerHTML = [0,1].map(() =>
   CINTA.map((t,i) => `<span class="${i%2?"hueco":""}">${t}<i class="punto"></i></span>`).join("")
 ).join("");
